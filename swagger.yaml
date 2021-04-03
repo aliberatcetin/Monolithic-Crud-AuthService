@@ -1,0 +1,483 @@
+swagger: '2.0'
+info:
+  description: Mobilaw Backend
+  version: 1.0.0
+  title: Mobilaw API Doc
+  # put the contact info for your development or API team
+
+
+paths:
+  /users/login:
+    post:
+      tags:
+      - users
+      summary: logins 
+      #operationId: login
+      #description: logins the system
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: User
+        description: user to login
+        schema:
+          $ref: '#/definitions/User'
+      responses:
+        200:
+          description: email and pass true. Authority value is true for admins, false for others.
+          schema:
+              $ref: '#/hiddenDef/loginedUser'
+        404:
+          description: email or pass is wrong
+  /users/logout:
+    get:
+      tags:
+      - users
+      summary: logs out
+      #operationId: login
+      #description: logins the system
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        description: token provided by login endpoint
+        name: Authorization
+        type: string
+        format: jwt
+      responses:
+        200:
+          description: logged out
+        403:
+          description: jwt is not valid or not already logged in.
+
+  /users/register:
+    post:
+      tags:
+      - users
+      summary: registers
+      #operationId: register
+      #description: registers the system
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: User
+        description: user to register
+        schema:
+          $ref: '#/hiddenDef/UserToRegister'
+      responses:
+        200:
+          description: user registered
+        400:
+          description: register form is not valid
+        409:
+          description: a user with that email already exists
+  /users/subscribe/:userid/:token:
+    get:
+      tags:
+      - users
+      summary: saves push token
+      #operationId: register
+      #description: registers the system
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: UserID
+        description: user id to add push token
+      - in: path
+        name: Token
+        description: push token to save.
+      - in: header
+        name: Authorization
+        description: token provided by login endpoint
+        name: Authorization
+        type: string
+        format: jwt
+      responses:
+        200:
+          description: user subscribed notifications
+        404:
+          description: user not found
+        403:
+          description: token is not valid
+  /questions/:
+    post:
+      tags:
+      - users
+      summary: inserts a question
+      #operationId: register
+      description: inserts a question to the corresponding user
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: Question
+        description: question to insert
+        schema:
+          $ref: '#/hiddenDef/QuestionToInsert'
+      - in: header
+        description: token provided by login endpoint
+        name: Authorization
+        type: string
+        format: jwt
+      responses:
+        200:
+          description: question inserted
+        403:
+          description: jwt token is not valid
+  /questions/all:
+    get:
+      tags:
+      - users
+      summary: gets all questions of a user
+      #operationId: register
+      description: gets all questions of a user
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: Authorization
+        description: token provided by login endpoint
+        name: Authorization
+        type: string
+        format: jwt
+      responses:
+        200:
+          description: search results
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Question'
+        403:
+          description: jwt token is not valid
+  /questions/:questionId:
+    get:
+      tags:
+      - users
+      summary: gets a question by id
+      #operationId: register
+      description: gets a question by id
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: QuestionID
+        description: question id to find
+      - in: header
+        name: Authorization
+        description: token provided by login endpoint
+        name: Authorization
+        type: string
+        format: jwt
+          
+      responses:
+        200:
+          description: search result matching criteria
+          schema:
+              $ref: '#/definitions/Question'
+        403:
+          description: jwt token is not valid
+  /auth/login/facebook/:access_token:
+    get:
+      tags:
+      - users
+      summary: logins by facebook
+      #operationId: register
+      description: logins by facebook
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: access_token
+        description: provided facebook access toke 
+          
+      responses:
+        200:
+          description: email and pass true. Authority value is true for admins, false for others.
+          schema:
+              $ref: '#/hiddenDef/loginedUser'
+        400:
+          description: facebook token is not valid
+  /auth/login/google/:id_token:
+    get:
+      tags:
+      - users
+      summary: logins by google
+      #operationId: register
+      description: logins by google
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: id_token
+        description: provided google id token 
+          
+      responses:
+        200:
+          description: email and pass true. Authority value is true for admins, false for others.
+          schema:
+              $ref: '#/hiddenDef/loginedUser'
+        400:
+          description: google token is not valid
+
+  /panel/all:
+    get:
+      tags:
+      - admins
+      summary: gets all questions asked by users
+      #operationId: register
+      description: gets all questions asked by users
+      produces:
+      - application/json 
+      parameters: 
+      - in: header
+        name: Authorization
+        description: token provided by login endpoint
+        name: Authorization
+        type: string
+        format: jwt
+      responses:
+        200:
+          description: search results
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Question'
+          
+        403:
+          description: jwt token is not valid
+  /panel/all/active:
+    get:
+      tags:
+      - admins
+      summary: gets all active questions asked by users
+      #operationId: register
+      description: gets all active questions asked by users
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: Authorization
+        description: token provided by login endpoint
+        name: Authorization
+        type: string
+        format: jwt
+      responses:
+        200:
+          description: search result matching criteria
+
+          schema:
+              $ref: '#/hiddenDef/QuestionActive'
+        403:
+          description: jwt token is not valid
+  /panel/all/unactive:
+    get:
+      tags:
+      - admins
+      summary: gets all unactive questions asked by users
+      #operationId: register
+      description: gets all unactive questions asked by users
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: Authorization
+        description: token provided by login endpoint
+        name: Authorization
+        type: string
+        format: jwt
+      responses:
+        200:
+          description: search result matching criteria
+
+          schema:
+              $ref: '#/hiddenDef/QuestionUnactive'
+        403:
+          description: jwt token is not valid
+  /panel/reply/:questionId:
+    post:
+      tags:
+      - admins
+      summary: gets all questions asked by users
+      #operationId: register
+      description: gets all questions asked by users
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: QuestionID
+        description: questionid to reply
+
+      - in: body
+        name: Reply
+        description: text to reply
+        schema:
+          $ref: '#/hiddenDef/Reply'
+      - in: header
+        name: Authorization
+        description: token provided by login endpoint
+        name: Authorization
+        type: string
+        format: jwt
+      responses:
+        200:
+          description: replied
+        403:
+          description: jwt token is not valid
+  
+hiddenDef:
+  UserToRegister:
+    type: object
+    required:
+    - email
+    - password
+    properties:
+      email:
+        type: string
+        example: mobilaw@gmail.com
+      fullname:
+        type: string
+        example: Ahmet Çakar
+      password:
+        type: string
+        example: 12345
+  loginedUser:
+    properties:
+      id:
+        type: string
+        example: 5c8504e23381aa0108721edd
+      authority:
+        type: boolean
+        example: true
+      email:
+        type: string
+        example: mobilaw@gmail.com
+      email:
+        type: string
+        example: Ahmet Çakar
+      token:
+        type: string
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxhbjNhMjI2QGdrYWRhcy5jb20iLCJpZCI6IjVjODJkNTU1YmNlYjk3MTFjNDQyZDU3MCIsImlhdCI6MTU1MjA5MzQzNCwiZXhwIjoxNTUyMTc5ODM0fQ.nSmUfhLUANH3cKBo3_EGM6Urns7HUQ1an5DClSaHHNA
+  QuestionUnactive:
+    properties:
+      email:
+        type: string
+        example: mobilaw@gmail.com
+      text:
+        type: string
+        example: Something
+      typeName:
+        type: string
+        example: Hukuki Soru
+      user:
+        type: string
+        example: ObjectId("4d3ed089fb60ab534684b7ff")
+      category:
+        type: string
+        example: ObjectId("4d3ed089fb60ab534684b7ff")
+      isActive:
+        type: boolean
+        example: false
+      answer:
+        type: string
+        example: Done
+  QuestionActive:
+    properties:
+      email:
+        type: string
+        example: mobilaw@gmail.com
+      text:
+        type: string
+        example: Something
+      typeName:
+        type: string
+        example: Hukuki Soru
+      user:
+        type: string
+        example: ObjectId("4d3ed089fb60ab534684b7ff")
+      category:
+        type: string
+        example: ObjectId("4d3ed089fb60ab534684b7ff")
+      isActive:
+        type: boolean
+        example: true
+      answer:
+        type: string
+        example: Done
+  Reply:
+    type: object
+    required:
+    - reply
+    properties: 
+      reply:
+        type: string
+        example: Dilekçe 5tl
+  QuestionToInsert:
+    required:
+    - text
+    - email
+    - type
+    properties:
+      email:
+        type: string
+        example: mobilaw@gmail.com
+      text:
+        type: string
+        example: Something
+      type:
+        type: string
+        example: 1 for Hukuki Soru 2 for Dilekce
+
+definitions:
+  User:
+    type: object
+    required:
+    - email
+    - password
+    properties:
+      email:
+        type: string
+        example: mobilaw@gmail.com
+      password:
+        type: string
+        example: 123456
+      #releaseDate:
+       # type: string
+        #format: date-time
+        #example: 2016-08-29T09:12:33.001Z
+      #manufacturer:
+        #$ref: '#/definitions/Manufacturer'
+  Question:
+    properties:
+      email:
+        type: string
+        example: mobilaw@gmail.com
+      text:
+        type: string
+        example: Something
+      typeName:
+        type: string
+        example: Hukuki Soru
+      user:
+        type: string
+        example: ObjectId("4d3ed089fb60ab534684b7ff")
+      category:
+        type: string
+        example: ObjectId("4d3ed089fb60ab534684b7ff")
+      isActive:
+        type: boolean
+        example: false
+      answer:
+        type: string
+        example: Done
+
+# Added by API Auto Mocking Plugin
+schemes:
+ - http
