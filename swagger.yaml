@@ -1,8 +1,8 @@
 swagger: '2.0'
 info:
-  description: Mobilaw Backend
+  description: User Service
   version: 1.0.0
-  title: Mobilaw API Doc
+  title: API Doc
   # put the contact info for your development or API team
 
 
@@ -341,10 +341,10 @@ hiddenDef:
     properties:
       email:
         type: string
-        example: mobilaw@gmail.com
+        example: try@gmail.com
       fullname:
         type: string
-        example: Ahmet Çakar
+        example: Michael Jordan
       password:
         type: string
         example: 12345
@@ -358,10 +358,10 @@ hiddenDef:
         example: true
       email:
         type: string
-        example: mobilaw@gmail.com
+        example: try@gmail.com
       email:
         type: string
-        example: Ahmet Çakar
+        example: Michael Jordan
       token:
         type: string
         example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxhbjNhMjI2QGdrYWRhcy5jb20iLCJpZCI6IjVjODJkNTU1YmNlYjk3MTFjNDQyZDU3MCIsImlhdCI6MTU1MjA5MzQzNCwiZXhwIjoxNTUyMTc5ODM0fQ.nSmUfhLUANH3cKBo3_EGM6Urns7HUQ1an5DClSaHHNA
@@ -369,13 +369,13 @@ hiddenDef:
     properties:
       email:
         type: string
-        example: mobilaw@gmail.com
+        example: try@gmail.com
       text:
         type: string
         example: Something
       typeName:
         type: string
-        example: Hukuki Soru
+        example: Question Type
       user:
         type: string
         example: ObjectId("4d3ed089fb60ab534684b7ff")
@@ -392,13 +392,13 @@ hiddenDef:
     properties:
       email:
         type: string
-        example: mobilaw@gmail.com
+        example: try@gmail.com
       text:
         type: string
         example: Something
       typeName:
         type: string
-        example: Hukuki Soru
+        example: Question Type
       user:
         type: string
         example: ObjectId("4d3ed089fb60ab534684b7ff")
@@ -427,13 +427,13 @@ hiddenDef:
     properties:
       email:
         type: string
-        example: mobilaw@gmail.com
+        example: try@gmail.com
       text:
         type: string
         example: Something
       type:
         type: string
-        example: 1 for Hukuki Soru 2 for Dilekce
+        example: 1 for QuestionType1 2 for QuestionType2
 
 definitions:
   User:
@@ -444,7 +444,7 @@ definitions:
     properties:
       email:
         type: string
-        example: mobilaw@gmail.com
+        example: try@gmail.com
       password:
         type: string
         example: 123456
@@ -458,13 +458,13 @@ definitions:
     properties:
       email:
         type: string
-        example: mobilaw@gmail.com
+        example: try@gmail.com
       text:
         type: string
         example: Something
       typeName:
         type: string
-        example: Hukuki Soru
+        example: Question Type
       user:
         type: string
         example: ObjectId("4d3ed089fb60ab534684b7ff")
