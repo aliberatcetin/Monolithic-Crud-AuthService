@@ -16,9 +16,9 @@ app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser.json()); // get information from html forms
 app.use(bodyParser.urlencoded({extended: true}));
 
-
+const dbUrl = `mongodb+srv:// ${settings.dbUser}:${settings.dbPass}@${settings.dbUrl}/myFirstDatabase?retryWrites=true&w=majority`
 mongoose.Promise = global.Promise;
-mongoose.connect(settings.dbUrl, {
+mongoose.connect(dbUrl, {
     useNewUrlParser: true
 }).then(() => {
     console.log("Successfully connected to the database");

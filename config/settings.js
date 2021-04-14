@@ -7,5 +7,5 @@ module.exports = {
     notificationMail:process.env.NOTIFICATION_MAIL,
     notificationMailPass:process.env.NOTIFICATION_MAIL_PASS,
     secret:process.env.APP_SECRET,
-    dbUrl:'mongodb+srv://beratcetin:asdzxc@cluster0.lhdkh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+    dbUrl:process.env.DB_URL
 }
